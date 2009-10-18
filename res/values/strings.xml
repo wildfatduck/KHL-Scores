@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, KHLScores!</string>
+	<string name="app_name">KHL Scores</string>
+	<string name="empty">Данных не найдено</string>
+	<string name="menu_refresh">Обновить</string>
+</resources>
