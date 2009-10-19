@@ -9,24 +9,29 @@
 			android:shrinkColumns="1">
 			<TableRow android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView android:id="@+id/homeTeam" android:textSize="15sp" android:text="OT"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-				<TextView android:id="@+id/homeTeamScore" android:textSize="15sp" android:text="OT"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/homeTeam" android:textSize="15sp"
+					android:text="OT" android:layout_width="wrap_content"
+					android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/homeTeamScore" android:textSize="15sp"
+					android:text="OT" android:layout_width="wrap_content"
+					android:layout_height="wrap_content"></TextView>
 			</TableRow>
 			<TableRow android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView android:id="@+id/awayTeam" android:textSize="15sp" android:text="OT"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-				<TextView android:id="@+id/awayTeamScore" android:textSize="15sp" android:text="OT"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/awayTeam" android:textSize="15sp"
+					android:text="OT" android:layout_width="wrap_content"
+					android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/awayTeamScore" android:textSize="15sp"
+					android:text="OT" android:layout_width="wrap_content"
+					android:layout_height="wrap_content"></TextView>
 			</TableRow>
 		</TableLayout>
-		<TextView android:id="@+id/extraTime" android:textSize="12sp" android:minWidth="20sp"
+		<TextView android:id="@+id/extraTime" android:textSize="12sp"
+			android:layout_marginRight="5px" android:minWidth="20sp"
 			android:layout_width="wrap_content" android:gravity="center"
 			android:layout_height="fill_parent"></TextView>
 	</TableRow>
-	<TextView android:id="@+id/time" android:gravity="right" android:text="OT"
-		android:textSize="10sp" android:layout_width="wrap_content"
-		android:layout_height="wrap_content"></TextView>
+	<TextView android:id="@+id/time" android:gravity="right"
+		android:layout_marginRight="5px" android:textSize="10sp"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 </TableLayout>

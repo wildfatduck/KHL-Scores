@@ -6,16 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GameParser {
+	private static final String SCORES_PATTERN = "<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*";
+
 	public static GameParser get() {
 		return new GameParser();
 	}
 
 	public List<Game> parseGameResults(String results) {
 		List<Game> games = new ArrayList<Game>();
-		Pattern p = Pattern
-				.compile("<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*");
-		// <li>\d+\.\s*<b>([А-Яа-я\d\s\-\w]+)</b>(\s*<b>(\d+):(\d+)(<sup>([А-Яа-я\w]+)</sup>)*</b>)*,([А-Яа-я\d\s\-:\w]+)(,\s\[<a
-		// href='(\d+)\\.(\w+)'>)*
+		Pattern p = Pattern.compile(SCORES_PATTERN);
 		Matcher matcher = p.matcher(results);
 
 		while (matcher.find()) {
