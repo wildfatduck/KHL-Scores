@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<ListPreference android:title="@string/refresh_title"
+		android:key="refresh_inerval" android:entries="@array/refresh_interval_titles"
+		android:dialogTitle="@string/refresh_title" 
+		android:summary="@string/refresh_hint" android:entryValues="@array/interval_values"></ListPreference>
+</PreferenceScreen>

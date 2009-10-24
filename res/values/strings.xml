@@ -3,5 +3,20 @@
 	<string name="hello">Hello World, KHLScores!</string>
 	<string name="app_name">KHL Scores</string>
 	<string name="empty">Данных не найдено</string>
+	<string name="empty_wait">Загрузка данных...</string>
 	<string name="menu_refresh">Обновить</string>
+	<string name="menu_prefs">Параметры</string>
+	<string name="prefs_title">Параметры KHL Scores</string>
+	<string name="refresh_title">Интервал обновления</string>
+	<string name="refresh_hint">Время между автоматическими обновлениями результатов</string>
+	<string-array name="refresh_interval_titles">
+		<item>Никогда</item>
+		<item>1 минута</item>
+		<item>2 минуты</item>
+		<item>3 минуты</item>
+		<item>5 минут</item>
+		<item>10 минут</item>
+		<item>15 минут</item>
+		<item>20 минут</item>
+	</string-array>
 </resources>
