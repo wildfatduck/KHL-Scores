@@ -9,13 +9,6 @@ public class Game {
 	private String extra;
 	private String detailsLink;
 
-	@Override
-	public String toString() {
-		return "Match [awayTeam=" + awayTeam + ", awayTeamScore="
-				+ awayTeamScore + ", homeTeam=" + homeTeam + ", homeTeamScore="
-				+ homeTeamScore + ", time=" + time + "]";
-	}
-
 	public String getHomeTeam() {
 		return homeTeam;
 	}

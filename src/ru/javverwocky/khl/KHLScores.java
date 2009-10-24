@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ru.javverwocky.khl.data.Game;
 import ru.javverwocky.khl.data.GameParser;
 import ru.javverwocky.khl.util.URLDownloader;
 import android.app.ListActivity;
@@ -24,14 +23,14 @@ public class KHLScores extends ListActivity {
 
 	private TextView empty;
 	private GameAdapter gameAdapter;
-	private List<Game> games;
-	private TimerTask updateTimerTask = new TimerTask() {
+	private List<Object> games;
+	private Timer timer;
+	private Runnable loadThread = new Runnable() {
 		@Override
 		public void run() {
 			loadGames();
 		}
 	};
-	private Timer timer = new Timer();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -74,15 +73,15 @@ public class KHLScores extends ListActivity {
 		super.onResume();
 		int period = Prefs.getInterval(this);
 		if (period > 0) {
-			timer.schedule(updateTimerTask, 0, period * 60000);
-		} else {
-			new Thread() {
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					loadGames();
 				}
-
-			}.start();
+			}, 0, period * 60000);
+		} else {
+			new Thread(loadThread).start();
 		}
 	}
 
@@ -90,6 +89,7 @@ public class KHLScores extends ListActivity {
 	protected void onPause() {
 		super.onPause();
 		timer.cancel();
+		timer.purge();
 	}
 
 	private void loadGames() {
@@ -109,7 +109,7 @@ public class KHLScores extends ListActivity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.refresh_mnu:
-			loadGames();
+			new Thread(loadThread).start();
 			return true;
 		case R.id.prefs_mnu:
 			startActivity(new Intent(this, Prefs.class));

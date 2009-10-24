@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 public class GameAdapter extends BaseAdapter {
 	private Context context;
-	private List<Game> games;
+	private List<Object> games;
 
-	public GameAdapter(Context context, List<Game> matches) {
+	public GameAdapter(Context context, List<Object> games) {
 		super();
 		this.context = context;
-		this.games = matches;
+		this.games = games;
 	}
 
 	@Override
@@ -38,33 +38,38 @@ public class GameAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View matchView = convertView;
-		if (convertView == null) {
-			matchView = LayoutInflater.from(context).inflate(R.layout.game, parent, false);
-		}
-
-		TextView text = (TextView) matchView.findViewById(R.id.homeTeam);
-		text.setText(games.get(position).getHomeTeam());
-
-		text = (TextView) matchView.findViewById(R.id.awayTeam);
-		text.setText(games.get(position).getAwayTeam());
-
-		text = (TextView) matchView.findViewById(R.id.homeTeamScore);
-		text.setText(games.get(position).getHomeTeamScore());
-
-		text = (TextView) matchView.findViewById(R.id.awayTeamScore);
-		text.setText(games.get(position).getAwayTeamScore());
-
-		text = (TextView) matchView.findViewById(R.id.time);
-		text.setText(games.get(position).getTime());
-
-		text = (TextView) matchView.findViewById(R.id.extraTime);
-		if (games.get(position).getExtra().length() == 0 && games.get(position).getDetailsLink() != null) {
-			text.setText(">");
+		View view;
+		if (games.get(position) instanceof String) {
+			view = LayoutInflater.from(context).inflate(R.layout.header, parent, false);
+			TextView text = (TextView)view.findViewById(R.id.header);
+			text.setText((String)games.get(position));
 		} else {
-			text.setText(games.get(position).getExtra());
+			Game game = (Game) games.get(position);
+			view = LayoutInflater.from(context).inflate(R.layout.game, parent, false);
+
+			TextView text = (TextView) view.findViewById(R.id.homeTeam);
+			text.setText(game.getHomeTeam());
+
+			text = (TextView) view.findViewById(R.id.awayTeam);
+			text.setText(game.getAwayTeam());
+
+			text = (TextView) view.findViewById(R.id.homeTeamScore);
+			text.setText(game.getHomeTeamScore());
+
+			text = (TextView) view.findViewById(R.id.awayTeamScore);
+			text.setText(game.getAwayTeamScore());
+
+			text = (TextView) view.findViewById(R.id.time);
+			text.setText(game.getTime());
+
+			text = (TextView) view.findViewById(R.id.extraTime);
+			if (game.getExtra().length() == 0 && game.getDetailsLink() != null) {
+				text.setText(">");
+			} else {
+				text.setText(game.getExtra());
+			}
 		}
 
-		return matchView;
+		return view;
 	}
 }
