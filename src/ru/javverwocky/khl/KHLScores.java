@@ -50,6 +50,7 @@ public class KHLScores extends ListActivity {
 
 		gameAdapter = new GameAdapter(KHLScores.this, games);
 		setListAdapter(gameAdapter);
+		
 	}
 
 	private final Handler loadHandler = new Handler() {
@@ -97,8 +98,9 @@ public class KHLScores extends ListActivity {
 
 	private void loadGames() {
 		loadHandler.sendEmptyMessage(MSG_PROGRESS_START);
+		List<Object> newResults = GameParser.get().parseGameResults(URLDownloader.get().urlToString("http://online.khl.ru/online/"));
 		games.clear();
-		games.addAll(GameParser.get().parseGameResults(URLDownloader.get().urlToString("http://online.khl.ru/online/")));
+		games.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
 	}
 
