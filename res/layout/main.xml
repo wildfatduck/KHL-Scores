@@ -5,6 +5,6 @@
 
 	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
-	<TextView android:text="@string/empty_wait" android:id="@+id/empty"
+	<TextView android:text="@string/empty_wait" android:id="@android:id/empty"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"/>
 </LinearLayout>

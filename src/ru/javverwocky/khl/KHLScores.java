@@ -1,5 +1,6 @@
 package ru.javverwocky.khl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,7 +24,7 @@ public class KHLScores extends ListActivity {
 
 	private TextView empty;
 	private GameAdapter gameAdapter;
-	private List<Object> games;
+	private List<Object> games = new ArrayList<Object>();
 	private Timer timer;
 	private Runnable loadThread = new Runnable() {
 		@Override
@@ -41,12 +42,14 @@ public class KHLScores extends ListActivity {
 
 		setContentView(R.layout.main);
 
-		empty = (TextView) findViewById(R.id.empty);
+		empty = (TextView) findViewById(android.R.id.empty);
 
 		ListView gamesList = getListView();
-		gamesList.setEmptyView(empty);
 		gamesList.setItemsCanFocus(true);
 		gamesList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+		gameAdapter = new GameAdapter(KHLScores.this, games);
+		setListAdapter(gameAdapter);
 	}
 
 	private final Handler loadHandler = new Handler() {
@@ -58,10 +61,10 @@ public class KHLScores extends ListActivity {
 			case KHLScores.MSG_UPDATE:
 				if (games == null || games.size() == 0) {
 					empty.setText(getResources().getText(R.string.empty));
-				} else {
-					gameAdapter = new GameAdapter(KHLScores.this, games);
-					setListAdapter(gameAdapter);
 				}
+
+				gameAdapter.notifyDataSetChanged();
+				
 				setProgressBarIndeterminateVisibility(false);
 				break;
 			}
@@ -94,7 +97,8 @@ public class KHLScores extends ListActivity {
 
 	private void loadGames() {
 		loadHandler.sendEmptyMessage(MSG_PROGRESS_START);
-		games = GameParser.get().parseGameResults(URLDownloader.get().urlToString("http://online.khl.ru/online/"));
+		games.clear();
+		games.addAll(GameParser.get().parseGameResults(URLDownloader.get().urlToString("http://online.khl.ru/online/")));
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
 	}
 

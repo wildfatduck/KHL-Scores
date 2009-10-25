@@ -37,9 +37,9 @@ public class GameParser {
 					game.setHomeTeam(teams[0].trim());
 					game.setAwayTeam(teams[1].trim());
 				}
-				game.setHomeTeamScore(matcher.group(4) != null ? matcher.group(3).trim() : "");
-				game.setAwayTeamScore(matcher.group(5) != null ? matcher.group(4).trim() : "");
-				game.setExtra(matcher.group(7) != null ? matcher.group(6).trim() : "");
+				game.setHomeTeamScore(matcher.group(4) != null ? matcher.group(4).trim() : "");
+				game.setAwayTeamScore(matcher.group(5) != null ? matcher.group(5).trim() : "");
+				game.setExtra(matcher.group(7) != null ? matcher.group(7).trim() : "");
 				game.setTime(matcher.group(8).trim());
 				game.setDetailsLink(matcher.group(10) != null ? matcher.group(10) + "." + matcher.group(11) : null);
 				games.add(game);
