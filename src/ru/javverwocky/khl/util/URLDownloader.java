@@ -9,11 +9,7 @@ import java.net.URL;
 import android.util.Log;
 
 public class URLDownloader {
-	public static URLDownloader get() {
-		return new URLDownloader();
-	}
-
-	public String urlToString(String url) {
+	public static String urlToString(String url) {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader reader = null;
 		try {

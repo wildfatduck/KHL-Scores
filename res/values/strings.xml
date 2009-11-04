@@ -29,4 +29,5 @@
 		<item>15</item>
 		<item>20</item>
 	</string-array>	
+<string name="timelineTitle">Трансляция</string>
 </resources>

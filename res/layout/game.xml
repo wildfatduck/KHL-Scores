@@ -9,29 +9,30 @@
 			android:shrinkColumns="1" android:layout_marginLeft="5px">
 			<TableRow android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView android:id="@+id/homeTeam" android:textSize="15sp"
-					android:text="OT" android:layout_width="wrap_content"
-					android:layout_height="wrap_content"></TextView>
-				<TextView android:id="@+id/homeTeamScore" android:textSize="15sp"
-					android:text="OT" android:layout_width="wrap_content"
-					android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/homeTeam" android:textSize="14sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF"></TextView>
+				<TextView android:id="@+id/homeTeamScore" android:textSize="14sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF"></TextView>
 			</TableRow>
 			<TableRow android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-				<TextView android:id="@+id/awayTeam" android:textSize="15sp"
-					android:text="OT" android:layout_width="wrap_content"
-					android:layout_height="wrap_content"></TextView>
-				<TextView android:id="@+id/awayTeamScore" android:textSize="15sp"
-					android:text="OT" android:layout_width="wrap_content"
-					android:layout_height="wrap_content"></TextView>
+				<TextView android:id="@+id/awayTeam" android:textSize="14sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF"></TextView>
+				<TextView android:id="@+id/awayTeamScore" android:textSize="14sp"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:textColor="#FFFFFF"></TextView>
 			</TableRow>
 		</TableLayout>
 		<TextView android:id="@+id/extraTime" android:textSize="12sp"
 			android:layout_marginRight="5px" android:minWidth="20sp"
 			android:layout_width="wrap_content" android:gravity="center"
-			android:layout_height="fill_parent"></TextView>
+			android:layout_height="fill_parent" android:textColor="#FFFFFF"></TextView>
 	</TableRow>
 	<TextView android:id="@+id/time" android:gravity="right"
 		android:layout_marginRight="5px" android:textSize="10sp"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textColor="#FFFFFF"></TextView>
 </TableLayout>

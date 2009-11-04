@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ru.javverwocky.khl.data.Game;
 import ru.javverwocky.khl.data.GameParser;
 import ru.javverwocky.khl.util.URLDownloader;
 import android.app.ListActivity;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,7 +52,7 @@ public class KHLScores extends ListActivity {
 
 		gameAdapter = new GameAdapter(KHLScores.this, games);
 		setListAdapter(gameAdapter);
-		
+
 	}
 
 	private final Handler loadHandler = new Handler() {
@@ -65,7 +67,7 @@ public class KHLScores extends ListActivity {
 				}
 
 				gameAdapter.notifyDataSetChanged();
-				
+
 				setProgressBarIndeterminateVisibility(false);
 				break;
 			}
@@ -98,7 +100,8 @@ public class KHLScores extends ListActivity {
 
 	private void loadGames() {
 		loadHandler.sendEmptyMessage(MSG_PROGRESS_START);
-		List<Object> newResults = GameParser.get().parseGameResults(URLDownloader.get().urlToString("http://online.khl.ru/online/"));
+		List<Object> newResults = GameParser
+				.parseGameResults(URLDownloader.urlToString("http://online.khl.ru/online/"));
 		games.clear();
 		games.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
@@ -122,5 +125,16 @@ public class KHLScores extends ListActivity {
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+
+		Object item = games.get(position);
+		if (item instanceof Game) {
+			KHLApplication.CURRENT_GAME = (Game) item;
+			startActivity(new Intent(this, GameTimeline.class));
+		}
 	}
 }

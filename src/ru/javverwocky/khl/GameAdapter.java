@@ -41,8 +41,10 @@ public class GameAdapter extends BaseAdapter {
 		View view;
 		if (games.get(position) instanceof String) {
 			view = LayoutInflater.from(context).inflate(R.layout.header, parent, false);
+			view.setClickable(false);
 			TextView text = (TextView)view.findViewById(R.id.header);
 			text.setText((String)games.get(position));
+			text.setClickable(false);
 		} else {
 			Game game = (Game) games.get(position);
 			view = LayoutInflater.from(context).inflate(R.layout.game, parent, false);
@@ -71,5 +73,10 @@ public class GameAdapter extends BaseAdapter {
 		}
 
 		return view;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return games.get(position) instanceof Game;
 	}
 }
