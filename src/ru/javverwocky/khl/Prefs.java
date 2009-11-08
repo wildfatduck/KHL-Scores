@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 public class Prefs extends PreferenceActivity {
 	private static String OPT_INTERVAL = "refresh_inerval";
 	private static String OPT_INTERVAL_DEF = "1";
+	private static String OPT_INTERVAL_GAME = "refresh_game_inerval";
+	private static String OPT_INTERVAL_GAME_DEF = "1";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +17,12 @@ public class Prefs extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 	}
 
-	public static int getInterval(Context context) {
-		return Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getString(OPT_INTERVAL, OPT_INTERVAL_DEF));
+	public static double getInterval(Context context) {
+		return Double.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getString(OPT_INTERVAL, OPT_INTERVAL_DEF));
 	}
+
+	public static double getIntervalForGame(Context context) {
+		return Double.valueOf(PreferenceManager.getDefaultSharedPreferences(context).getString(OPT_INTERVAL_GAME, OPT_INTERVAL_GAME_DEF));
+	}
+
 }

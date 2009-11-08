@@ -2,6 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<ListPreference android:title="@string/refresh_title"
 		android:key="refresh_inerval" android:entries="@array/refresh_interval_titles"
-		android:dialogTitle="@string/refresh_title" 
-		android:summary="@string/refresh_hint" android:entryValues="@array/interval_values"></ListPreference>
+		android:dialogTitle="@string/refresh_title" android:summary="@string/refresh_hint"
+		android:entryValues="@array/interval_values"></ListPreference>
+	<ListPreference android:title="@string/refresh_game_title"
+		android:key="refresh_game_inerval" android:entries="@array/refresh_interval_titles"
+		android:dialogTitle="@string/refresh_game_title" android:summary="@string/refresh_game_hint"
+		android:entryValues="@array/interval_values"></ListPreference>
 </PreferenceScreen>

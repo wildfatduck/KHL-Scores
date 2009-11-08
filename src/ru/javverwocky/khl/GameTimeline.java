@@ -10,9 +10,12 @@ import ru.javverwocky.khl.data.TimelineItem;
 import ru.javverwocky.khl.util.URLDownloader;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,7 +74,25 @@ public class GameTimeline extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		new Thread(loadThread).start();
+		double period = Prefs.getIntervalForGame(this);
+		if (period > 0) {
+			timer = new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					loadTimeline();
+				}
+			}, 0, (long) (period * 60000));
+		} else {
+			new Thread(loadThread).start();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		timer.cancel();
+		timer.purge();
 	}
 
 	protected void loadTimeline() {
@@ -81,5 +102,25 @@ public class GameTimeline extends ListActivity {
 		timeline.clear();
 		timeline.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.prefsmenu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.refresh_mnu:
+			new Thread(loadThread).start();
+			return true;
+		case R.id.prefs_mnu:
+			startActivity(new Intent(this, Prefs.class));
+			return true;
+		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 }

@@ -77,7 +77,7 @@ public class KHLScores extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		int period = Prefs.getInterval(this);
+		double period = Prefs.getInterval(this);
 		if (period > 0) {
 			timer = new Timer();
 			timer.schedule(new TimerTask() {
@@ -85,7 +85,7 @@ public class KHLScores extends ListActivity {
 				public void run() {
 					loadGames();
 				}
-			}, 0, period * 60000);
+			}, 0, (long)(period * 60000));
 		} else {
 			new Thread(loadThread).start();
 		}
@@ -132,7 +132,7 @@ public class KHLScores extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 
 		Object item = games.get(position);
-		if (item instanceof Game) {
+		if (item instanceof Game && ((Game) item).getDetailsLink() != null) {
 			KHLApplication.CURRENT_GAME = (Game) item;
 			startActivity(new Intent(this, GameTimeline.class));
 		}

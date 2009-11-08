@@ -5,6 +5,7 @@ import java.util.List;
 import ru.javverwocky.khl.data.Game;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +43,13 @@ public class GameAdapter extends BaseAdapter {
 		if (games.get(position) instanceof String) {
 			view = LayoutInflater.from(context).inflate(R.layout.header, parent, false);
 			view.setClickable(false);
-			TextView text = (TextView)view.findViewById(R.id.header);
-			text.setText((String)games.get(position));
+			TextView text = (TextView) view.findViewById(R.id.header);
+			text.setText((String) games.get(position));
 			text.setClickable(false);
 		} else {
 			Game game = (Game) games.get(position);
 			view = LayoutInflater.from(context).inflate(R.layout.game, parent, false);
+			boolean isGoing = game.getDetailsLink() != null && !game.getTime().equals("матч завершен");
 
 			TextView text = (TextView) view.findViewById(R.id.homeTeam);
 			text.setText(game.getHomeTeam());
@@ -57,9 +59,11 @@ public class GameAdapter extends BaseAdapter {
 
 			text = (TextView) view.findViewById(R.id.homeTeamScore);
 			text.setText(game.getHomeTeamScore());
+			if (isGoing) text.setTextColor(Color.GREEN);
 
 			text = (TextView) view.findViewById(R.id.awayTeamScore);
 			text.setText(game.getAwayTeamScore());
+			if (isGoing) text.setTextColor(Color.GREEN);
 
 			text = (TextView) view.findViewById(R.id.time);
 			text.setText(game.getTime());
