@@ -98,7 +98,7 @@ public class GameTimeline extends ListActivity {
 	protected void loadTimeline() {
 		loadHandler.sendEmptyMessage(MSG_PROGRESS_START);
 		List<TimelineItem> newResults = GameParser.parseTimeline(URLDownloader
-				.urlToString("http://online.khl.ru/online/" + KHLApplication.CURRENT_GAME.getDetailsLink()));
+				.loadGameDetails(KHLApplication.CURRENT_GAME.getDetailsLink()));
 		timeline.clear();
 		timeline.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);

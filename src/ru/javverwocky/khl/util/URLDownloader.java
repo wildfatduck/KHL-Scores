@@ -9,7 +9,17 @@ import java.net.URL;
 import android.util.Log;
 
 public class URLDownloader {
-	public static String urlToString(String url) {
+	private static final String URL_RESULTS = "http://online.khl.ru/online/";
+	
+	public static String loadResults() {
+		return urlToString(URL_RESULTS);
+	}
+	
+	public static String loadGameDetails(String gameUrl) {
+		return urlToString(URL_RESULTS + gameUrl);
+	}
+	
+	private static String urlToString(String url) {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader reader = null;
 		try {

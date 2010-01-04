@@ -12,6 +12,7 @@ import org.json.JSONObject;
 public class GameParser {
 	private static final Pattern SCORES_PATTERN = Pattern
 			.compile(">([А-Яа-я\\s\\.]+)<ul>|<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*");
+
 	private static final Pattern GKA_PATTERN = Pattern.compile("var gkA\\s*=\\s*(\\d*);");
 	private static final Pattern GKB_PATTERN = Pattern.compile("var gkB\\s*=\\s*(\\d*);");
 	private static final Pattern TEAMNAMES_PATTERN = Pattern.compile("var teamNames\\s*=\\s*(\\{.*\\});");
@@ -19,6 +20,13 @@ public class GameParser {
 	private static final Pattern GAMEPLAYERS_PATTERN = Pattern.compile("var gamePlayers\\s*=\\s*(\\{.*\\});");
 	private static final Pattern EVENTS_PATTERN = Pattern.compile("var olEvents\\s*=\\s*(\\[.*\\]);");
 
+	/**
+	 * Parse livescores html page
+	 * 
+	 * @param results
+	 *            html page content
+	 * @return list of rscores
+	 */
 	public static List<Object> parseGameResults(String results) {
 		List<Object> games = new ArrayList<Object>();
 
@@ -61,43 +69,33 @@ public class GameParser {
 		return games;
 	}
 
+	/**
+	 * Parse details of game
+	 * 
+	 * @param timeline
+	 *            html page content
+	 * @return list of game events
+	 */
 	public static List<TimelineItem> parseTimeline(String timeline) {
-		int goalieA = -1;
-		int goalieB = -1;
+		int goalieA;
+		int goalieB;
 
-		Matcher matcher = GKA_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			goalieA = Integer.valueOf(matcher.group(1));
+		try {
+			goalieA = Integer.valueOf(extractGroup(GKA_PATTERN, timeline));
+		} catch (NumberFormatException nfe) {
+			goalieA = -1;
 		}
 
-		matcher = GKB_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			goalieB = Integer.valueOf(matcher.group(1));
+		try {
+			goalieB = Integer.valueOf(extractGroup(GKB_PATTERN, timeline));
+		} catch (NumberFormatException nfe) {
+			goalieB = -1;
 		}
 
-		String teamNames = "";
-		matcher = TEAMNAMES_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			teamNames = matcher.group(1);
-		}
-
-		String teamPlayers = "";
-		matcher = TEAMPLAYERS_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			teamPlayers = matcher.group(1);
-		}
-
-		String gamePlayers = "";
-		matcher = GAMEPLAYERS_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			gamePlayers = matcher.group(1);
-		}
-
-		String events = "";
-		matcher = EVENTS_PATTERN.matcher(timeline);
-		if (matcher.find()) {
-			events = matcher.group(1);
-		}
+		String teamNames = extractGroup(TEAMNAMES_PATTERN, timeline);
+		String teamPlayers = extractGroup(TEAMPLAYERS_PATTERN, timeline);
+		String gamePlayers = extractGroup(GAMEPLAYERS_PATTERN, timeline);
+		String events = extractGroup(EVENTS_PATTERN, timeline);
 
 		List<TimelineItem> res = null;
 
@@ -109,7 +107,24 @@ public class GameParser {
 		return res;
 	}
 
-	// TODO: getTeam, getPlayer
+	/**
+	 * Convert json data of game events to list of events
+	 * 
+	 * @param goalieA
+	 *            id of goalkeeper of first team
+	 * @param goalieB
+	 *            id of goalkeeper of second team
+	 * @param _teamNames
+	 *            team names as json object
+	 * @param _teamPlayers
+	 *            team players data as json object
+	 * @param _gamePlayers
+	 *            players data for game as json object
+	 * @param _events
+	 *            game events as json array
+	 * @return list of game events
+	 * @throws JSONException
+	 */
 	private static List<TimelineItem> eventsToList(int goalieA, int goalieB, String _teamNames, String _teamPlayers,
 			String _gamePlayers, String _events) throws JSONException {
 		List<TimelineItem> items = new ArrayList<TimelineItem>();
@@ -138,35 +153,9 @@ public class GameParser {
 				items.add(new TimelineItem(TimelineItem.TYPE_COMMENT,
 						eventProps[1].length() == 0 ? "-" : eventProps[1], eventProps[2]));
 			} else if (eventProps[0].equals("go")) {
-				String gamePlayer;
-				String goalPlayer = "";
-				String assistPlayer = "";
-				String assistPlayer2 = "";
-
-				try {
-					gamePlayer = gamePlayers.getJSONObject(eventProps[2]).getJSONArray(eventProps[3]).getString(0);
-					goalPlayer = teamPlayers.getJSONObject(eventProps[2]).getJSONArray(gamePlayer).getString(0);
-				} catch (JSONException e) {
-					goalPlayer = "[нет в составе]";
-				}
-
-				if (eventProps[4].length() > 0) {
-					try {
-						gamePlayer = gamePlayers.getJSONObject(eventProps[2]).getJSONArray(eventProps[4]).getString(0);
-						assistPlayer = teamPlayers.getJSONObject(eventProps[2]).getJSONArray(gamePlayer).getString(0);
-					} catch (JSONException e) {
-						assistPlayer = "[нет в составе]";
-					}
-				}
-
-				if (eventProps[5].length() > 0) {
-					try {
-						gamePlayer = gamePlayers.getJSONObject(eventProps[2]).getJSONArray(eventProps[5]).getString(0);
-						assistPlayer2 = teamPlayers.getJSONObject(eventProps[2]).getJSONArray(gamePlayer).getString(0);
-					} catch (JSONException e) {
-						assistPlayer2 = "[нет в составе]";
-					}
-				}
+				String goalPlayer = getPlayerName(gamePlayers, teamPlayers, eventProps[2], eventProps[3]);
+				String assistPlayer = getPlayerName(gamePlayers, teamPlayers, eventProps[2], eventProps[4]);
+				String assistPlayer2 = getPlayerName(gamePlayers, teamPlayers, eventProps[2], eventProps[5]);
 
 				items.add(new TimelineItem(TimelineItem.TYPE_GOAL, eventProps[1], "Гол: "
 						+ goalA
@@ -192,27 +181,12 @@ public class GameParser {
 				else
 					goalB--;
 			} else if (eventProps[0].equals("pn")) {
-				String gamePlayer;
-				String penaltyPlayer = "";
+				String penaltyPlayer = getPlayerName(gamePlayers, teamPlayers, eventProps[2], eventProps[3]);
 				String shootPlayer = "";
-
-				try {
-					gamePlayer = gamePlayers.getJSONObject(eventProps[2]).getJSONArray(eventProps[3]).getString(0);
-					penaltyPlayer = teamPlayers.getJSONObject(eventProps[2]).getJSONArray(gamePlayer).getString(0);
-				} catch (JSONException e) {
-					penaltyPlayer = "[нет в составе]";
-				}
 
 				boolean isPenalty = Integer.valueOf(eventProps[4]) > 0;
 				if (!isPenalty) {
-					try {
-						gamePlayer = gamePlayers.getJSONObject(reverseTeam(eventProps[2])).getJSONArray(eventProps[6])
-								.getString(0);
-						shootPlayer = teamPlayers.getJSONObject(reverseTeam(eventProps[2])).getJSONArray(gamePlayer)
-								.getString(0);
-					} catch (JSONException e) {
-						shootPlayer = "[нет в составе]";
-					}
+					getPlayerName(gamePlayers, teamPlayers, reverseTeam(eventProps[2]), eventProps[6]);
 				}
 
 				items.add(new TimelineItem(TimelineItem.TYPE_PENALTY, eventProps[1],
@@ -230,23 +204,8 @@ public class GameParser {
 				int periodNum = Integer.valueOf(eventProps[3]);
 
 				if (eventProps[2].equals("0") && periodNum == 1) {
-					String gamePlayer;
-					String goalieAName = "";
-					String goalieBName = "";
-
-					try {
-						gamePlayer = gamePlayers.getJSONObject("A").getJSONArray("" + goalieA).getString(0);
-						goalieAName = teamPlayers.getJSONObject("A").getJSONArray(gamePlayer).getString(0);
-					} catch (JSONException e) {
-						goalieAName = "[нет в составе]";
-					}
-
-					try {
-						gamePlayer = gamePlayers.getJSONObject("B").getJSONArray("" + goalieB).getString(0);
-						goalieBName = teamPlayers.getJSONObject("B").getJSONArray(gamePlayer).getString(0);
-					} catch (JSONException e) {
-						goalieBName = "[нет в составе]";
-					}
+					String goalieAName = getPlayerName(gamePlayers, teamPlayers, "A", String.valueOf(goalieA));
+					String goalieBName = getPlayerName(gamePlayers, teamPlayers, "B", String.valueOf(goalieB));
 
 					items.add(new TimelineItem(TimelineItem.TYPE_COMMENT, "-", "В воротах " + goalieA + "."
 							+ goalieAName + " (" + teamNames.getString("A") + ") - " + goalieB + "." + goalieBName
@@ -260,23 +219,8 @@ public class GameParser {
 										+ (periodNum == 0 ? "игры" : (periodNum < 4 ? periodNum + "-го периода"
 												: "овертайма"))));
 			} else if (eventProps[0].equals("gc")) {
-				String gamePlayer;
-				String goalieAName = "";
-				String goalieBName = "";
-
-				try {
-					gamePlayer = gamePlayers.getJSONObject("A").getJSONArray("" + goalieA).getString(0);
-					goalieAName = teamPlayers.getJSONObject("A").getJSONArray(gamePlayer).getString(0);
-				} catch (JSONException e) {
-					goalieAName = "[нет в составе]";
-				}
-
-				try {
-					gamePlayer = gamePlayers.getJSONObject("B").getJSONArray("" + goalieB).getString(0);
-					goalieBName = teamPlayers.getJSONObject("B").getJSONArray(gamePlayer).getString(0);
-				} catch (JSONException e) {
-					goalieBName = "[нет в составе]";
-				}
+				String goalieAName = getPlayerName(gamePlayers, teamPlayers, "A", String.valueOf(goalieA));
+				String goalieBName = getPlayerName(gamePlayers, teamPlayers, "B", String.valueOf(goalieB));
 
 				items.add(new TimelineItem(TimelineItem.TYPE_GOALIE, eventProps[1], "Замена вратаря. "
 						+ teamNames.getString("A")
@@ -306,5 +250,29 @@ public class GameParser {
 			return "B";
 		else
 			return "A";
+	}
+
+	private static String extractGroup(Pattern pattern, String text) {
+		Matcher matcher = pattern.matcher(text);
+		String res = "";
+		if (matcher.find()) {
+			res = matcher.group(1);
+		}
+
+		return res;
+	}
+
+	private static String getPlayerName(JSONObject gamePlayers, JSONObject teamPlayers, String teamId, String playerId) {
+		if(playerId.length() == 0) return "";
+
+		String name;
+		try {
+			name = teamPlayers.getJSONObject(teamId).getJSONArray(
+					gamePlayers.getJSONObject(teamId).getJSONArray(playerId).getString(0)).getString(0);
+		} catch (JSONException e) {
+			name = "[нет в составе]";
+		}
+
+		return name;
 	}
 }

@@ -85,7 +85,7 @@ public class KHLScores extends ListActivity {
 				public void run() {
 					loadGames();
 				}
-			}, 0, (long)(period * 60000));
+			}, 0, (long) (period * 60000));
 		} else {
 			new Thread(loadThread).start();
 		}
@@ -100,8 +100,7 @@ public class KHLScores extends ListActivity {
 
 	private void loadGames() {
 		loadHandler.sendEmptyMessage(MSG_PROGRESS_START);
-		List<Object> newResults = GameParser
-				.parseGameResults(URLDownloader.urlToString("http://online.khl.ru/online/"));
+		List<Object> newResults = GameParser.parseGameResults(URLDownloader.loadResults());
 		games.clear();
 		games.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
