@@ -6,6 +6,7 @@
 	<string name="empty_wait">Загрузка данных...</string>
 	<string name="menu_refresh">Обновить</string>
 	<string name="menu_prefs">Параметры</string>
+	<string name="menu_standings">Турнирные таблицы</string>
 	<string name="prefs_title">Параметры KHL Scores</string>
 	<string name="refresh_title">Обновление результатов</string>
 	<string name="refresh_hint">Время между автоматическими обновлениями результатов</string>
@@ -34,4 +35,5 @@
 		<item>20</item>
 	</string-array>	
 <string name="timelineTitle">Трансляция</string>
+<string name="standingsTitle">Турнирные таблицы</string>
 </resources>

@@ -120,6 +120,9 @@ public class GameTimeline extends ListActivity {
 		case R.id.prefs_mnu:
 			startActivity(new Intent(this, Prefs.class));
 			return true;
+		case R.id.standings_mnu:
+			startActivity(new Intent(this, Standings.class));
+			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
