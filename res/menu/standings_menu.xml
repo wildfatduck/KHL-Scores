@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/championship" android:title="Чемпионат"></item>
+	<item android:id="@+id/conference" android:title="Конференции"></item>
+	<item android:id="@+id/division" android:title="Дивизионы"></item>
+</menu>

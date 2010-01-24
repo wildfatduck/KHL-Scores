@@ -8,6 +8,7 @@ import ru.javverwocky.khl.data.StandingsParser;
 import ru.javverwocky.khl.util.URLDownloader;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -114,6 +117,28 @@ public class Standings extends Activity {
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.standings_menu, menu);
+		return true; 
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.championship:
+			showStandings(URLDownloader.URL_STANDINGS_CHAMP);
+			return true;
+		case R.id.conference:
+			showStandings(URLDownloader.URL_STANDINGS_CONF);
+			return true;
+		case R.id.division:
+			showStandings(URLDownloader.URL_STANDINGS_DIVS);
+			return true;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
 	private void showStandings(String standingsType) {
 		progressDialog = ProgressDialog.show(Standings.this, "Пожалуйста, ждите", "Загружаются турнирные таблицы");
 
