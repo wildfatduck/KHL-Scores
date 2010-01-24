@@ -8,7 +8,6 @@ import ru.javverwocky.khl.data.StandingsParser;
 import ru.javverwocky.khl.util.URLDownloader;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;

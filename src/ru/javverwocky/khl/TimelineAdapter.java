@@ -3,7 +3,6 @@ package ru.javverwocky.khl;
 import java.util.List;
 
 import ru.javverwocky.khl.data.TimelineItem;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -39,7 +38,12 @@ public class TimelineAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = LayoutInflater.from(context).inflate(R.layout.timeline, parent, false);
+		View view;
+		if (convertView != null) {
+			view = convertView;
+		} else {
+			view = LayoutInflater.from(context).inflate(R.layout.timeline, parent, false);
+		}
 
 		TextView text = (TextView) view.findViewById(R.id.time);
 		text.setText(((TimelineItem) timeline.get(position)).getTime());
@@ -59,6 +63,8 @@ public class TimelineAdapter extends BaseAdapter {
 		case TimelineItem.TYPE_TIMEOUT:
 			text.setTextColor(Color.YELLOW);
 			break;
+		default:
+			text.setTextColor(Color.LTGRAY);
 		}
 
 		text = (TextView) view.findViewById(R.id.event);
@@ -70,6 +76,5 @@ public class TimelineAdapter extends BaseAdapter {
 	public boolean isEnabled(int position) {
 		return false;
 	}
-	
-	
+
 }
