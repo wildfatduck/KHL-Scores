@@ -10,10 +10,10 @@ import android.util.Log;
 
 public class URLDownloader {
 	private static final String URL_RESULTS = "http://online.khl.ru/online/";
-	
+
 	public static final String URL_STANDINGS_CHAMP = "http://www.khl.ru/standings/";
-	public static final String URL_STANDINGS_CONF = "http://www.khl.ru/standings/conference/";
-	public static final String URL_STANDINGS_DIVS = "http://www.khl.ru/standings/division/";
+	public static final String URL_STANDINGS_CONF = "http://www.khl.ru/standings/conference185/";
+	public static final String URL_STANDINGS_DIVS = "http://www.khl.ru/standings/division185/";
 
 	
 	public static String loadResults() {

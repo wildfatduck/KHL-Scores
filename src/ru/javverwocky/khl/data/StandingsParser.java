@@ -30,8 +30,8 @@ public class StandingsParser extends DefaultHandler {
 		try {
 			SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 			saxParser.parse(url, this);
-		} catch (Exception e) {
-			Log.e(this.getClass().getName(), e.getMessage());
+		} catch (Exception ex) {
+			Log.e(this.getClass().getName(), ex.getMessage() != null ? ex.getMessage() : ex.getStackTrace().toString());
 		}
 
 		return tables;

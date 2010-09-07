@@ -147,7 +147,7 @@ public class GameParser {
 		}
 
 		for (int i = 0; i < events.length(); i++) {
-			String[] eventProps = events.getString(i).split("\\|");
+			String[] eventProps = events.getString(i).split("\\|", -1);
 
 			if (eventProps[0].equals("co")) {
 				items.add(new TimelineItem(TimelineItem.TYPE_COMMENT,
