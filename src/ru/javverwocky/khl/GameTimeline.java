@@ -100,7 +100,7 @@ public class GameTimeline extends ListActivity {
 		List<TimelineItem> newResults = GameParser.parseTimeline(URLDownloader
 				.loadGameDetails(KHLApplication.CURRENT_GAME.getDetailsLink()));
 		timeline.clear();
-		timeline.addAll(newResults);
+		if (newResults != null) timeline.addAll(newResults);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
 	}
 
