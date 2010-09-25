@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.zip.GZIPInputStream;
 
 import android.util.Log;
 
@@ -29,7 +31,12 @@ public class URLDownloader {
 		BufferedReader reader = null;
 		try {
 			URL urlToLoad = new URL(url);
-			reader = new BufferedReader(new InputStreamReader(urlToLoad.openStream(), "windows-1251"));
+			URLConnection conn = urlToLoad.openConnection();
+			if ("gzip".equals(conn.getHeaderField("content-encoding"))) {
+				reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream()), "windows-1251"));
+			} else {
+				reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "windows-1251"));
+			}
 			String ln;
 			while ((ln = reader.readLine()) != null) {
 				sb.append(ln);

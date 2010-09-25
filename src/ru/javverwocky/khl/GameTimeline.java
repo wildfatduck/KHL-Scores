@@ -91,8 +91,10 @@ public class GameTimeline extends ListActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		timer.cancel();
-		timer.purge();
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();
+		}
 	}
 
 	protected void loadTimeline() {
