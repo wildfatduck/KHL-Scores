@@ -1,6 +1,7 @@
 package ru.javverwocky.khl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,16 +14,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class KHLScores extends ListActivity {
 	private static final int MSG_PROGRESS_START = 0;
 	private static final int MSG_UPDATE = 1;
+
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 	private TextView empty;
 	private GameAdapter gameAdapter;
@@ -35,6 +43,9 @@ public class KHLScores extends ListActivity {
 		}
 	};
 
+	private GestureDetector gestureDetector;
+	private View.OnTouchListener gestureListener;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,11 +55,24 @@ public class KHLScores extends ListActivity {
 
 		setContentView(R.layout.main);
 
+		gestureDetector = new GestureDetector(new KHLGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+
 		empty = (TextView) findViewById(android.R.id.empty);
+		empty.setOnTouchListener(gestureListener);
 
 		ListView gamesList = getListView();
 		gamesList.setItemsCanFocus(true);
 		gamesList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		gamesList.setOnTouchListener(gestureListener);
 
 		gameAdapter = new GameAdapter(KHLScores.this, games);
 		setListAdapter(gameAdapter);
@@ -65,6 +89,9 @@ public class KHLScores extends ListActivity {
 				if (games == null || games.size() == 0) {
 					empty.setText(getResources().getText(R.string.empty));
 				}
+				
+				setTitle("KHLScores [" + games.get(0) + "]");
+				games.remove(0);
 
 				gameAdapter.notifyDataSetChanged();
 
@@ -140,5 +167,39 @@ public class KHLScores extends ListActivity {
 			KHLApplication.CURRENT_GAME = (Game) item;
 			startActivity(new Intent(this, GameTimeline.class));
 		}
+	}
+
+	class KHLGestureDetector extends SimpleOnGestureListener {
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+
+				Calendar c = Calendar.getInstance();
+				c.setTime(KHLApplication.currentDate);
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					c.add(Calendar.DATE, 1);
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					c.add(Calendar.DATE, -1);
+				}
+				KHLApplication.currentDate = c.getTime();
+				loadGames();
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (gestureDetector.onTouchEvent(ev))
+			return true;
+		else
+			return super.dispatchTouchEvent(ev);
 	}
 }

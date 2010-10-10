@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.zip.GZIPInputStream;
+
+import ru.javverwocky.khl.KHLApplication;
 
 import android.util.Log;
 
@@ -19,7 +22,8 @@ public class URLDownloader {
 
 	
 	public static String loadResults() {
-		return urlToString(URL_RESULTS);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return urlToString(URL_RESULTS + sdf.format(KHLApplication.currentDate) + ".html");
 	}
 	
 	public static String loadGameDetails(String gameUrl) {
@@ -32,14 +36,16 @@ public class URLDownloader {
 		try {
 			URL urlToLoad = new URL(url);
 			URLConnection conn = urlToLoad.openConnection();
-			if ("gzip".equals(conn.getHeaderField("content-encoding"))) {
-				reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream()), "windows-1251"));
-			} else {
-				reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "windows-1251"));
-			}
-			String ln;
-			while ((ln = reader.readLine()) != null) {
-				sb.append(ln);
+			if (conn != null) {
+				if ("gzip".equals(conn.getHeaderField("content-encoding"))) {
+					reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream()), "windows-1251"));
+				} else {
+					reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "windows-1251"));
+				}
+				String ln;
+				while ((ln = reader.readLine()) != null) {
+					sb.append(ln);
+				}
 			}
 		} catch (MalformedURLException e) {
 			Log.e("KHLScores", "Going to invalid url", e);

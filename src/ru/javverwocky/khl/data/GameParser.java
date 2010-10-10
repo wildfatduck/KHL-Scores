@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 public class GameParser {
 	private static final Pattern SCORES_PATTERN = Pattern
-			.compile(">([А-Яа-я\\s\\.]+)<ul>|<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*");
+			.compile("<b>([А-Яа-я\\s\\.]+)[<>\\w\\s=\"/:.А-Яа-я\\[\\]]*<ul>|<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*|\\[([\\d\\-]+)\\]</h3>");
 
 	private static final Pattern GKA_PATTERN = Pattern.compile("var gkA\\s*=\\s*(\\d*);");
 	private static final Pattern GKB_PATTERN = Pattern.compile("var gkB\\s*=\\s*(\\d*);");
@@ -37,7 +37,7 @@ public class GameParser {
 			Matcher matcher = SCORES_PATTERN.matcher(results);
 
 			while (matcher.find()) {
-				String title = matcher.group(1);
+				String title = matcher.group(1) != null ? matcher.group(1) : matcher.group(12);
 				if (title != null) {
 					games.add(title.trim());
 				} else {
