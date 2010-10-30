@@ -12,8 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class TimelineAdapter extends BaseAdapter {
-	private Context context;
-	private List<TimelineItem> timeline;
+	private final Context context;
+	private final List<TimelineItem> timeline;
 
 	public TimelineAdapter(Context context, List<TimelineItem> timeline) {
 		super();
@@ -46,8 +46,8 @@ public class TimelineAdapter extends BaseAdapter {
 		}
 
 		TextView text = (TextView) view.findViewById(R.id.time);
-		text.setText(((TimelineItem) timeline.get(position)).getTime());
-		switch (((TimelineItem) timeline.get(position)).getType()) {
+		text.setText(timeline.get(position).getTime());
+		switch (timeline.get(position).getType()) {
 		case TimelineItem.TYPE_GOAL:
 			text.setTextColor(Color.GREEN);
 			break;
@@ -68,7 +68,7 @@ public class TimelineAdapter extends BaseAdapter {
 		}
 
 		text = (TextView) view.findViewById(R.id.event);
-		text.setText(((TimelineItem) timeline.get(position)).getComment());
+		text.setText(timeline.get(position).getComment());
 		return view;
 	}
 

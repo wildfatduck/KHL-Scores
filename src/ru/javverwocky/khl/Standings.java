@@ -22,17 +22,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class Standings extends Activity {
-	protected static final int MSG_PROGRESS_START = 0;
-	protected static final int MSG_UPDATE = 1;
+	private static final int MSG_PROGRESS_START = 0;
+	private static final int MSG_UPDATE = 1;
 	private String currentStandings = URLDownloader.URL_STANDINGS_CHAMP;
 
-	StandingsParser parser = new StandingsParser();
-	HashMap<String, LinkedList<LinkedList<String>>> data;
+	private final StandingsParser parser = new StandingsParser();
+	private HashMap<String, LinkedList<LinkedList<String>>> data;
 	private ProgressDialog progressDialog;
-	private Runnable loadThread = new Runnable() {
+	private final Runnable loadThread = new Runnable() {
 		@Override
 		public void run() {
-			loadStandings(currentStandings);
+			loadStandings();
 		}
 	};
 
@@ -57,7 +57,7 @@ public class Standings extends Activity {
 		}
 	};
 
-	protected void loadStandings(String standings) {
+	protected void loadStandings() {
 		data = parser.parse(currentStandings);
 		loadHandler.sendEmptyMessage(MSG_UPDATE);
 	}

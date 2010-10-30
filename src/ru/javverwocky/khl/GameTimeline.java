@@ -26,9 +26,9 @@ public class GameTimeline extends ListActivity {
 
 	private TextView empty;
 	private TimelineAdapter timelineAdapter;
-	private List<TimelineItem> timeline = new ArrayList<TimelineItem>();
+	private final List<TimelineItem> timeline = new ArrayList<TimelineItem>();
 	private Timer timer;
-	private Runnable loadThread = new Runnable() {
+	private final Runnable loadThread = new Runnable() {
 		@Override
 		public void run() {
 			loadTimeline();

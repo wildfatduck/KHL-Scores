@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class KHLData {
-	public static HashMap<String, String> penalties = new HashMap<String, String>();
-	public static ArrayList<String> rbm = new ArrayList<String>();
+	public static final HashMap<String, String> penalties = new HashMap<String, String>();
+	public static final ArrayList<String> rbm = new ArrayList<String>();
 	static {
 		penalties.put("11", "Атака в область головы и шеи");
 		penalties.put("1", "Атака игрока не владеющего шайбой");

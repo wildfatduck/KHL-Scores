@@ -13,8 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class GameAdapter extends BaseAdapter {
-	private Context context;
-	private List<Object> games;
+	private final Context context;
+	private final List<Object> games;
 
 	public GameAdapter(Context context, List<Object> games) {
 		super();

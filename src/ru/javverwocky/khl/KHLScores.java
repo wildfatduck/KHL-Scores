@@ -34,9 +34,9 @@ public class KHLScores extends ListActivity {
 
 	private TextView empty;
 	private GameAdapter gameAdapter;
-	private List<Object> games = new ArrayList<Object>();
+	private final List<Object> games = new ArrayList<Object>();
 	private Timer timer;
-	private Runnable loadThread = new Runnable() {
+	private final Runnable loadThread = new Runnable() {
 		@Override
 		public void run() {
 			loadGames();
@@ -44,9 +44,8 @@ public class KHLScores extends ListActivity {
 	};
 
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
 
-	/** Called when the activity is first created. */
+    /** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,15 +55,12 @@ public class KHLScores extends ListActivity {
 		setContentView(R.layout.main);
 
 		gestureDetector = new GestureDetector(new KHLGestureDetector());
-		gestureListener = new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
-			}
-		};
+        View.OnTouchListener gestureListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        };
 
 		empty = (TextView) findViewById(android.R.id.empty);
 		empty.setOnTouchListener(gestureListener);
@@ -90,7 +86,7 @@ public class KHLScores extends ListActivity {
 					empty.setText(getResources().getText(R.string.empty));
 				}
 				
-				setTitle("KHLScores [" + games.get(0) + "]");
+				setTitle("KHLScores [" + (games.get(0) != null ? games.get(0) : "") + "]");
 				games.remove(0);
 
 				gameAdapter.notifyDataSetChanged();
@@ -196,10 +192,7 @@ public class KHLScores extends ListActivity {
 	}
 
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		if (gestureDetector.onTouchEvent(ev))
-			return true;
-		else
-			return super.dispatchTouchEvent(ev);
+	public boolean onTouchEvent(MotionEvent ev) {
+        return gestureDetector.onTouchEvent(ev) || super.onTouchEvent(ev);
 	}
 }

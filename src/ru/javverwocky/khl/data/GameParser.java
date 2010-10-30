@@ -123,7 +123,7 @@ public class GameParser {
 	 * @param _events
 	 *            game events as json array
 	 * @return list of game events
-	 * @throws JSONException
+	 * @throws JSONException error of JSON processing
 	 */
 	private static List<TimelineItem> eventsToList(int goalieA, int goalieB, String _teamNames, String _teamPlayers,
 			String _gamePlayers, String _events) throws JSONException {

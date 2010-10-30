@@ -6,10 +6,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 public class Prefs extends PreferenceActivity {
-	private static String OPT_INTERVAL = "refresh_inerval";
-	private static String OPT_INTERVAL_DEF = "1";
-	private static String OPT_INTERVAL_GAME = "refresh_game_inerval";
-	private static String OPT_INTERVAL_GAME_DEF = "1";
+	private static final String OPT_INTERVAL = "refresh_inerval";
+	private static final String OPT_INTERVAL_DEF = "1";
+	private static final String OPT_INTERVAL_GAME = "refresh_game_inerval";
+	private static final String OPT_INTERVAL_GAME_DEF = "1";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
