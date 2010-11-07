@@ -85,10 +85,8 @@ public class KHLScores extends ListActivity {
 				if (games == null || games.size() == 0) {
 					empty.setText(getResources().getText(R.string.empty));
 				}
-				
-				setTitle("KHLScores [" + (games.get(0) != null ? games.get(0) : "") + "]");
-				games.remove(0);
 
+                setTitle("KHLScores [" + (KHLApplication.DATE_FROM_KHL != null ? KHLApplication.DATE_FROM_KHL : "") + "]");
 				gameAdapter.notifyDataSetChanged();
 
 				setProgressBarIndeterminateVisibility(false);

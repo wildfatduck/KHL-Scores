@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.javverwocky.khl.KHLApplication;
 
 public class GameParser {
 	private static final Pattern SCORES_PATTERN = Pattern
@@ -37,9 +38,11 @@ public class GameParser {
 			Matcher matcher = SCORES_PATTERN.matcher(results);
 
 			while (matcher.find()) {
-				String title = matcher.group(1) != null ? matcher.group(1) : matcher.group(12);
-				if (title != null) {
-					games.add(title.trim());
+				String title = matcher.group(12) != null ? matcher.group(12) : matcher.group(1);
+				if (matcher.group(12) != null) {
+                    KHLApplication.DATE_FROM_KHL = matcher.group(12);
+                } else if (matcher.group(1) != null) {
+					games.add(matcher.group(1).trim());
 				} else {
 					Game game = new Game();
 
