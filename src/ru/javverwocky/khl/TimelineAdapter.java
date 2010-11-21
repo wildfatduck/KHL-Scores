@@ -42,7 +42,7 @@ public class TimelineAdapter extends BaseAdapter {
 		if (convertView != null) {
 			view = convertView;
 		} else {
-			view = LayoutInflater.from(context).inflate(R.layout.timeline, parent, false);
+			view = View.inflate(context, R.layout.timeline, null);
 		}
 
 		TextView text = (TextView) view.findViewById(R.id.time);

@@ -2,11 +2,12 @@ package ru.javverwocky.khl;
 
 import java.util.List;
 
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import ru.javverwocky.khl.data.Game;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -41,14 +42,23 @@ public class GameAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
 		if (games.get(position) instanceof String) {
-			view = LayoutInflater.from(context).inflate(R.layout.header, parent, false);
+			if (convertView != null && !(convertView instanceof TableLayout)) {
+                view = convertView;
+            } else {
+                view = View.inflate(context, R.layout.header, null);
+            }
 			view.setClickable(false);
 			TextView text = (TextView) view.findViewById(R.id.header);
 			text.setText((String) games.get(position));
 			text.setClickable(false);
 		} else {
-			Game game = (Game) games.get(position);
-			view = LayoutInflater.from(context).inflate(R.layout.game, parent, false);
+			if (convertView != null && convertView instanceof TableLayout) {
+                view = convertView;
+            } else {
+               view = View.inflate(context, R.layout.game, null);
+            }
+
+            Game game = (Game) games.get(position);
 			boolean isGoing = game.getDetailsLink() != null && !game.getTime().equals("матч завершен");
 
 			TextView text = (TextView) view.findViewById(R.id.homeTeam);

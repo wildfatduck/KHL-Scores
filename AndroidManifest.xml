@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="ru.javverwocky.khl" android:versionCode="10"
-	android:versionName="0.5">
+	package="ru.javverwocky.khl" android:versionCode="11"
+	android:versionName="0.5.1">
 	<application android:icon="@drawable/khlscores"
 		android:label="@string/app_name" android:name="KHLApplication">
 		<activity android:name=".KHLScores" android:label="@string/app_name">
@@ -10,10 +10,10 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".Prefs" android:label="@string/prefs_title"></activity>
-		<activity android:name=".GameTimeline" android:label="@string/timelineTitle"></activity>
-		<activity android:name=".Standings" android:label="@string/standingsTitle"></activity>
+		<activity android:name=".Prefs" android:label="@string/prefs_title"/>
+		<activity android:name=".GameTimeline" android:label="@string/timelineTitle"/>
+		<activity android:name=".Standings" android:label="@string/standingsTitle"/>
 	</application>
 	<uses-sdk android:minSdkVersion="3" />
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"/>
 </manifest> 

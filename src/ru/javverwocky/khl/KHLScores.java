@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.util.Log;
 import ru.javverwocky.khl.data.Game;
 import ru.javverwocky.khl.data.GameParser;
 import ru.javverwocky.khl.util.URLDownloader;
@@ -165,26 +166,27 @@ public class KHLScores extends ListActivity {
 
 	class KHLGestureDetector extends SimpleOnGestureListener {
 
-		@Override
+        private Calendar calendar = Calendar.getInstance();
+
+        @Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
 				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 					return false;
 
-				Calendar c = Calendar.getInstance();
-				c.setTime(KHLApplication.currentDate);
+				calendar.setTime(KHLApplication.currentDate);
 				// right to left swipe
 				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					c.add(Calendar.DATE, 1);
+					calendar.add(Calendar.DATE, 1);
 				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					c.add(Calendar.DATE, -1);
+					calendar.add(Calendar.DATE, -1);
 				}
-				KHLApplication.currentDate = c.getTime();
+				KHLApplication.currentDate = calendar.getTime();
 				loadGames();
 			} catch (Exception e) {
 				// nothing
 			}
-			return false;
+            return false;
 		}
 
 	}
