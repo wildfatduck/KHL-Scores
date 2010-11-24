@@ -23,7 +23,7 @@ public class URLDownloader {
 	
 	public static String loadResults() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return urlToString(URL_RESULTS + sdf.format(KHLApplication.currentDate) + ".html");
+		return urlToString(URL_RESULTS + sdf.format(KHLApplication.currentDate.getTime()) + ".html");
 	}
 	
 	public static String loadGameDetails(String gameUrl) {
