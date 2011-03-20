@@ -12,7 +12,7 @@ import ru.javverwocky.khl.KHLApplication;
 
 public class GameParser {
 	private static final Pattern SCORES_PATTERN = Pattern
-			.compile("<b>([А-Яа-я\\s\\.]+)[<>\\w\\s=\"/:.А-Яа-я\\[\\]]*<ul>|<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*|\\[([\\d\\-]+)\\]</h3>");
+			.compile("<b>([А-Яа-я\\s\\.\\-]+)[<>\\w\\s=\"/:.А-Яа-я\\[\\]]*<ul>|<li>\\d+\\.\\s*<b>([А-Яа-я\\d\\s\\-\\w]+)</b>(\\s*<b>(\\d+):(\\d+)(<sup>([А-Яа-я\\w]+)</sup>)*</b>)*,([А-Яа-я\\d\\s\\-:\\w]+)(,\\s\\[<a href='(\\d+)\\.(\\w+)'>)*|\\[([\\d\\-]+)\\]</h3>");
 
 	private static final Pattern GKA_PATTERN = Pattern.compile("var gkA\\s*=\\s*(\\d*);");
 	private static final Pattern GKB_PATTERN = Pattern.compile("var gkB\\s*=\\s*(\\d*);");
